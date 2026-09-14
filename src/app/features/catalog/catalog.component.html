@@ -1,0 +1,112 @@
+<div class="container catalog-page">
+  <app-breadcrumb [items]="[{ label: 'Accueil', link: '/' }, { label: activeCategoryName || 'Catalogue' }]" />
+
+  <div class="catalog-head">
+    <div>
+      <h1 class="section-title">{{ activeCategoryName || 'Catalogue Matériel Informatique & Sécurité Professionnelle' }}</h1>
+      <p class="catalog-sub">
+        <strong>{{ total() }}</strong> équipements disponibles
+        @if (searchTerm()) { pour « {{ searchTerm() }} » }
+      </p>
+    </div>
+    <button type="button" class="btn btn-outline filters-toggle" (click)="filtersOpen.set(!filtersOpen())">
+      <span class="material-symbols-outlined">tune</span> Filtres
+    </button>
+  </div>
+
+  @if (hasActiveFilters()) {
+    <div class="active-filters">
+      <span>Filtres actifs :</span>
+      @if (selectedCategory()) {
+        <span class="filter-chip">{{ activeCategoryName }} <button type="button" (click)="selectCategory(null)"><span class="material-symbols-outlined">close</span></button></span>
+      }
+      @for (b of selectedBrands(); track b) {
+        <span class="filter-chip">{{ b }} <button type="button" (click)="removeBrand(b)"><span class="material-symbols-outlined">close</span></button></span>
+      }
+      <button type="button" class="clear-all" (click)="clearFilters()">Effacer tout</button>
+    </div>
+  }
+
+  <div class="catalog-layout">
+    <aside class="filters-rail" [class.open]="filtersOpen()">
+      <div class="filter-block">
+        <h3>Catégories Matériel</h3>
+        <button type="button" class="filter-option" [class.active]="!selectedCategory()" (click)="selectCategory(null)">
+          Tous les équipements
+        </button>
+        @for (cat of categories(); track cat.id) {
+          <button type="button" class="filter-option" [class.active]="selectedCategory() === cat.slug" (click)="selectCategory(cat.slug)">
+            {{ cat.name }} <span class="count">{{ cat.productCount }}</span>
+          </button>
+        }
+      </div>
+
+      <div class="filter-block">
+        <h3>Budget (FCFA)</h3>
+        <div class="price-inputs">
+          <input class="input" type="number" placeholder="Min" [ngModel]="minPrice()" #minInput
+                 (change)="applyPriceRange(minInput.valueAsNumber || null, maxPrice())" />
+          <span>—</span>
+          <input class="input" type="number" placeholder="Max" [ngModel]="maxPrice()" #maxInput
+                 (change)="applyPriceRange(minPrice(), maxInput.valueAsNumber || null)" />
+        </div>
+      </div>
+
+      <div class="filter-block">
+        <h3>Marque / Constructeur</h3>
+        @for (b of brands(); track b) {
+          <label class="checkbox-row">
+            <input type="checkbox" [checked]="selectedBrands().includes(b)" (change)="toggleBrand(b)" />
+            {{ b }}
+          </label>
+        }
+      </div>
+
+      <div class="filter-block">
+        <h3>Disponibilité</h3>
+        <label class="checkbox-row">
+          <input type="checkbox" [checked]="selectedAvailability().includes('in_stock')" (change)="toggleAvailability('in_stock')" />
+          En stock immédiat
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" [checked]="selectedAvailability().includes('on_order')" (change)="toggleAvailability('on_order')" />
+          Disponible sur commande
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" [checked]="selectedAvailability().includes('incoming')" (change)="toggleAvailability('incoming')" />
+          En arrivage container
+        </label>
+      </div>
+    </aside>
+
+    <div class="results-panel">
+      <div class="results-toolbar">
+        <label class="sort-label">
+          Trier par :
+          <select class="select" [ngModel]="sort()" (ngModelChange)="changeSort($event)">
+            @for (opt of sortOptions; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </label>
+      </div>
+
+      @if (loading()) {
+        <div class="loading-state"><span class="spinner"></span> Chargement des équipements...</div>
+      } @else if (products().length === 0) {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">search_off</span>
+          <p>Aucun équipement ne correspond à ces critères.</p>
+          <button type="button" class="btn btn-primary" (click)="clearFilters()">Réinitialiser les filtres</button>
+        </div>
+      } @else {
+        <div class="product-grid">
+          @for (p of products(); track p.id) {
+            <app-product-card [product]="p" />
+          }
+        </div>
+        <app-pagination [page]="page()" [totalPages]="totalPages()" (pageChange)="changePage($event)" />
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="container confirmation-page">
+  <app-checkout-steps [current]="4" />
+
+  @if (loading()) {
+    <div class="loading-state"><span class="spinner"></span> Chargement de la commande...</div>
+  } @else if (order()) {
+    @let o = order()!;
+    <div class="confirmation-card card">
+      <span class="material-symbols-outlined success-icon">check_circle</span>
+      <h1>Commande confirmée !</h1>
+      <p>
+        Merci pour votre confiance. Votre commande <strong>{{ o.orderNumber }}</strong> a bien été
+        enregistrée et le paiement (simulé) a été validé.
+      </p>
+
+      <div class="order-summary">
+        <div class="summary-row"><span>Numéro de commande</span><strong>{{ o.orderNumber }}</strong></div>
+        <div class="summary-row"><span>Statut</span><strong>{{ statusLabel(o.status) }}</strong></div>
+        <div class="summary-row"><span>Mode de paiement</span><strong>{{ paymentLabel(o.paymentMethod) }}</strong></div>
+        <div class="summary-row"><span>Total TTC</span><strong class="price">{{ o.totalTtc | number: '1.0-0' }} FCFA</strong></div>
+      </div>
+
+      <div class="items-list">
+        @for (item of o.items; track item.id) {
+          <div class="item-row">
+            <span>{{ item.quantity }}x {{ item.productName }}@if (item.variantName) { — {{ item.variantName }} }</span>
+            <strong>{{ item.lineTotalTtc | number: '1.0-0' }} FCFA</strong>
+          </div>
+        }
+      </div>
+
+      <div class="confirmation-actions">
+        <button type="button" class="btn btn-primary" (click)="downloadInvoice()">
+          <span class="material-symbols-outlined">download</span> Télécharger la facture PDF
+        </button>
+        <a routerLink="/compte/commandes" class="btn btn-outline">Suivre mes commandes</a>
+        <a routerLink="/catalogue" class="btn btn-ghost">Continuer mes achats</a>
+      </div>
+    </div>
+  }
+</div>

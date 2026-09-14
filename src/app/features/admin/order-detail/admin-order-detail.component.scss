@@ -1,0 +1,84 @@
+@use '../../../../styles/mixins' as m;
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+  margin-bottom: var(--space-md);
+
+  &:hover { color: var(--color-primary); }
+}
+
+.head-actions { display: flex; align-items: center; gap: .625rem; }
+
+.status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem;
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-lg);
+
+  span { font-weight: 600; font-size: .875rem; color: var(--color-on-surface-variant); }
+}
+
+.action-buttons { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+
+  @include m.desktop { grid-template-columns: 2fr 1fr; }
+}
+
+.detail-main { display: flex; flex-direction: column; gap: var(--space-lg); }
+
+.card { padding: var(--space-lg); }
+.card h2 { font-size: 1rem; margin-bottom: var(--space-md); }
+
+.item-rows { display: flex; flex-direction: column; gap: .75rem; }
+
+.item-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: var(--space-md);
+  align-items: center;
+  font-size: .875rem;
+  padding-bottom: .75rem;
+  border-bottom: 1px solid var(--color-outline-variant);
+
+  .variant { display: block; font-size: .75rem; color: var(--color-secondary); font-weight: 600; }
+  .sku { display: block; font-size: .6875rem; color: var(--color-outline); }
+}
+
+.totals {
+  margin-top: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: .375rem;
+
+  div { display: flex; justify-content: space-between; font-size: .875rem; color: var(--color-on-surface-variant); }
+  .grand-total { font-weight: 700; color: var(--color-on-surface); font-size: 1rem; padding-top: .5rem; border-top: 1px dashed var(--color-outline-variant); }
+}
+
+.history-rows { display: flex; flex-direction: column; gap: .625rem; }
+
+.history-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font-size: .8125rem;
+  flex-wrap: wrap;
+
+  .history-date { color: var(--color-outline); }
+  .history-comment { color: var(--color-on-surface-variant); }
+}
+
+.address-card p { font-size: .875rem; margin: 2px 0; color: var(--color-on-surface-variant); }
+.section-sep { margin-top: var(--space-lg); }
+.paid-badge { color: var(--color-primary); font-weight: 700; }

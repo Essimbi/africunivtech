@@ -1,0 +1,52 @@
+<div class="container auth-page">
+  <div class="auth-card" style="max-width: 520px;">
+    <div class="auth-header">
+      <img src="assets/brand/logo-full.png" alt="Africa Univ Technology Sarl" class="brand-logo auth-logo" />
+      <h1>Créer un Compte Entreprise B2B</h1>
+      <p>Accédez aux tarifs grossistes, devis express et suivi de commandes dédié.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-grid-2">
+        <div class="field">
+          <label for="firstName">Prénom</label>
+          <input id="firstName" class="input" formControlName="firstName" />
+        </div>
+        <div class="field">
+          <label for="lastName">Nom</label>
+          <input id="lastName" class="input" formControlName="lastName" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="company">Entreprise (optionnel)</label>
+        <input id="company" class="input" formControlName="company" placeholder="Ex: Synergie Réseaux SARL" />
+      </div>
+
+      <div class="form-grid-2">
+        <div class="field">
+          <label for="email">Email professionnel</label>
+          <input id="email" class="input" type="email" formControlName="email" autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="phone">Téléphone</label>
+          <input id="phone" class="input" formControlName="phone" placeholder="+237 6XX XX XX XX" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input id="password" class="input" type="password" formControlName="password" autocomplete="new-password" />
+        <span class="hint">Minimum 8 caractères.</span>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="submitting()">
+        {{ submitting() ? 'Création du compte...' : 'Créer mon compte' }}
+      </button>
+    </form>
+
+    <p class="auth-footer">
+      Déjà client AUTS ? <a routerLink="/compte/connexion">Se connecter</a>
+    </p>
+  </div>
+</div>

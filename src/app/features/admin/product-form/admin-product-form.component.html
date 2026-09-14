@@ -1,0 +1,153 @@
+<a routerLink="/admin/produits" class="back-link"><span class="material-symbols-outlined">arrow_back</span> Retour à l'inventaire</a>
+
+<h1 class="section-title">{{ productId() ? 'Modifier le produit' : 'Nouveau produit' }}</h1>
+
+<form [formGroup]="form" (ngSubmit)="save()" class="product-form">
+  <div class="card form-section">
+    <h2>Informations générales</h2>
+    <div class="form-grid-2">
+      <div class="field">
+        <label>Nom du produit</label>
+        <input class="input" formControlName="name" (blur)="slugify()" />
+      </div>
+      <div class="field">
+        <label>Slug (URL)</label>
+        <input class="input" formControlName="slug" />
+      </div>
+    </div>
+    <div class="form-grid-3">
+      <div class="field">
+        <label>SKU / Référence</label>
+        <input class="input" formControlName="sku" />
+      </div>
+      <div class="field">
+        <label>Marque</label>
+        <input class="input" formControlName="brand" />
+      </div>
+      <div class="field">
+        <label>Catégorie</label>
+        <select class="select" formControlName="categoryId">
+          <option value="" disabled>Sélectionner...</option>
+          @for (c of categories(); track c.id) { <option [value]="c.id">{{ c.name }}</option> }
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Description courte</label>
+      <input class="input" formControlName="shortDescription" />
+    </div>
+    <div class="field">
+      <label>Description complète</label>
+      <textarea class="input" rows="4" formControlName="description"></textarea>
+    </div>
+  </div>
+
+  <div class="card form-section">
+    <h2>Prix &amp; Stock</h2>
+    <div class="form-grid-3">
+      <div class="field">
+        <label>Prix HT (FCFA)</label>
+        <input class="input" type="number" formControlName="priceHt" />
+      </div>
+      <div class="field">
+        <label>Prix TTC (FCFA)</label>
+        <input class="input" type="number" formControlName="priceTtc" />
+      </div>
+      <div class="field">
+        <label>Prix barré (optionnel)</label>
+        <input class="input" type="number" formControlName="compareAtPriceTtc" />
+      </div>
+    </div>
+    <div class="form-grid-3">
+      <div class="field">
+        <label>Stock</label>
+        <input class="input" type="number" formControlName="stock" />
+      </div>
+      <div class="field">
+        <label>Seuil d'alerte</label>
+        <input class="input" type="number" formControlName="stockAlertThreshold" />
+      </div>
+      <div class="field">
+        <label>Garantie (mois)</label>
+        <input class="input" type="number" formControlName="warrantyMonths" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Disponibilité</label>
+      <select class="select" formControlName="availability">
+        <option value="in_stock">En stock</option>
+        <option value="on_order">Sur commande</option>
+        <option value="incoming">En arrivage</option>
+      </select>
+    </div>
+    <div class="checkbox-group">
+      <label class="checkbox-row"><input type="checkbox" formControlName="isActive" /> Produit actif</label>
+      <label class="checkbox-row"><input type="checkbox" formControlName="isFeatured" /> Mettre en avant (Meilleures ventes)</label>
+      <label class="checkbox-row"><input type="checkbox" formControlName="isNew" /> Marquer comme nouveauté</label>
+    </div>
+  </div>
+
+  <div class="card form-section">
+    <div class="section-head-row">
+      <h2>Points forts</h2>
+      <button type="button" class="btn btn-ghost btn-sm" (click)="addHighlight()"><span class="material-symbols-outlined">add</span> Ajouter</button>
+    </div>
+    @for (ctrl of highlightsArray.controls; track $index; let i = $index) {
+      <div class="repeat-row">
+        <input class="input" [formControl]="$any(ctrl)" placeholder="Ex: PoE+ 370W" />
+        <button type="button" class="btn-icon" (click)="removeHighlight(i)"><span class="material-symbols-outlined">close</span></button>
+      </div>
+    }
+  </div>
+
+  <div class="card form-section">
+    <div class="section-head-row">
+      <h2>Images</h2>
+      <button type="button" class="btn btn-ghost btn-sm" (click)="addImage()"><span class="material-symbols-outlined">add</span> Ajouter</button>
+    </div>
+    @for (group of imagesArray.controls; track $index; let i = $index) {
+      <div class="repeat-row" [formGroup]="$any(group)">
+        <input class="input" formControlName="url" placeholder="/assets/products/laptop.svg" />
+        <input class="input" formControlName="altText" placeholder="Texte alternatif" />
+        <button type="button" class="btn-icon" (click)="removeImage(i)"><span class="material-symbols-outlined">close</span></button>
+      </div>
+    }
+  </div>
+
+  <div class="card form-section">
+    <div class="section-head-row">
+      <h2>Variantes (optionnel)</h2>
+      <button type="button" class="btn btn-ghost btn-sm" (click)="addVariant()"><span class="material-symbols-outlined">add</span> Ajouter</button>
+    </div>
+    @for (group of variantsArray.controls; track $index; let i = $index) {
+      <div class="repeat-row variant-row" [formGroup]="$any(group)">
+        <input class="input" formControlName="name" placeholder="Nom (ex: 2 To)" />
+        <input class="input" formControlName="sku" placeholder="SKU variante" />
+        <input class="input" type="number" formControlName="priceDeltaTtc" placeholder="Delta prix TTC" />
+        <input class="input" type="number" formControlName="stock" placeholder="Stock" />
+        <button type="button" class="btn-icon" (click)="removeVariant(i)"><span class="material-symbols-outlined">close</span></button>
+      </div>
+    }
+  </div>
+
+  <div class="card form-section">
+    <div class="section-head-row">
+      <h2>Caractéristiques techniques</h2>
+      <button type="button" class="btn btn-ghost btn-sm" (click)="addSpec()"><span class="material-symbols-outlined">add</span> Ajouter</button>
+    </div>
+    @for (group of specsArray.controls; track $index; let i = $index) {
+      <div class="repeat-row" [formGroup]="$any(group)">
+        <input class="input" formControlName="key" placeholder="Clé (ex: Processeur)" />
+        <input class="input" formControlName="value" placeholder="Valeur" />
+        <button type="button" class="btn-icon" (click)="removeSpec(i)"><span class="material-symbols-outlined">close</span></button>
+      </div>
+    }
+  </div>
+
+  <div class="form-actions">
+    <a routerLink="/admin/produits" class="btn btn-ghost">Annuler</a>
+    <button type="submit" class="btn btn-primary" [disabled]="saving()">
+      {{ saving() ? 'Enregistrement...' : 'Enregistrer le produit' }}
+    </button>
+  </div>
+</form>

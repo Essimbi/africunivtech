@@ -1,0 +1,29 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: .375rem;
+  justify-content: center;
+  margin-block: var(--space-lg);
+}
+
+.page-btn {
+  min-width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-lowest);
+  color: var(--color-on-surface);
+  font-weight: 600;
+  font-size: .875rem;
+  transition: all .15s ease;
+
+  &:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+  &.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+}
+
+.ellipsis { color: var(--color-outline); padding-inline: .25rem; }

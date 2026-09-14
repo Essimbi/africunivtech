@@ -1,0 +1,146 @@
+@if (loading()) {
+  <div class="container loading-state"><span class="spinner"></span> Chargement de la fiche produit...</div>
+} @else if (product()) {
+  @let p = product()!;
+  <div class="container product-detail">
+    <app-breadcrumb [items]="[
+      { label: 'Accueil', link: '/' },
+      { label: 'Catalogue', link: '/catalogue' },
+      { label: p.category?.name || '', link: '/catalogue' },
+      { label: p.name }
+    ]" />
+
+    <div class="detail-grid">
+      <div class="gallery">
+        <div class="gallery-main">
+          @if (discountPercent) { <span class="badge badge-accent discount-badge">-{{ discountPercent }}%</span> }
+          <span class="badge badge-success stock-badge">
+            <span class="material-symbols-outlined">verified</span> En Stock Officiel
+          </span>
+          <img [src]="p.images[activeImageIndex()]?.url || p.images[0]?.url || '/assets/products/placeholder.svg'" [alt]="p.name" />
+        </div>
+        @if (p.images.length > 1) {
+          <div class="gallery-thumbs">
+            @for (img of p.images; track img.id; let i = $index) {
+              <button type="button" class="thumb" [class.active]="i === activeImageIndex()" (click)="activeImageIndex.set(i)">
+                <img [src]="img.url" [alt]="img.altText || p.name" />
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="info">
+        <div class="brand-ref">
+          <span class="brand">{{ p.brand }}</span>
+          <span class="ref">RÉF: {{ p.sku }}</span>
+        </div>
+        <h1>{{ p.name }}</h1>
+
+        <div class="rating-row">
+          <app-star-rating [value]="p.ratingAvg" />
+          <strong>{{ p.ratingAvg | number: '1.1-1' }}/5</strong>
+          <span>({{ p.ratingCount }} avis clients vérifiés)</span>
+        </div>
+
+        <div class="stock-message" [class.warn]="currentStock < 5">
+          <span class="material-symbols-outlined">check_circle</span>
+          @if (currentStock > 0) {
+            En stock — Expédition garantie sous 24h ouvrées.
+            @if (currentStock < 10) { <strong>Plus que {{ currentStock }} en stock</strong> }
+          } @else {
+            Rupture de stock temporaire
+          }
+        </div>
+
+        <div class="price-row">
+          @if (p.compareAtPriceTtc) {
+            <span class="price-strike">{{ p.compareAtPriceTtc | number: '1.0-0' }} FCFA</span>
+          }
+          <span class="price" style="font-size:2rem">{{ currentPrice | number: '1.0-0' }} FCFA</span>
+        </div>
+        <p class="price-ht">Prix HT estimé: {{ (currentPrice / (1 + 0.1925)) | number: '1.0-0' }} FCFA — TVA 19.25% incluse</p>
+
+        @if (p.shortDescription) { <p class="short-desc">{{ p.shortDescription }}</p> }
+
+        @if (p.highlights?.length) {
+          <div class="highlight-badges">
+            @for (h of p.highlights; track h) { <span class="highlight-pill">{{ h }}</span> }
+          </div>
+        }
+
+        @if (p.variants?.length) {
+          <div class="variants">
+            <h3>Capacité de stockage :</h3>
+            <div class="variant-options">
+              @for (v of p.variants; track v.id) {
+                <button type="button" class="variant-card" [class.active]="selectedVariant()?.id === v.id" (click)="selectVariant(v)">
+                  <span class="variant-name">{{ v.name }}</span>
+                  <span class="variant-delta">{{ v.priceDeltaTtc > 0 ? '+' + (v.priceDeltaTtc | number: '1.0-0') + ' FCFA' : 'Inclus' }}</span>
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        <div class="purchase-row">
+          <app-quantity-input [value]="quantity()" [max]="currentStock || 1" (valueChange)="quantity.set($event)" />
+          <button type="button" class="btn btn-primary btn-block" [disabled]="adding() || currentStock === 0" (click)="addToCart()">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            {{ adding() ? 'Ajout en cours...' : 'Ajouter au Panier' }}
+          </button>
+        </div>
+
+        <div class="trust-row">
+          <span><span class="material-symbols-outlined">verified_user</span> Garantie {{ p.warrantyMonths }} mois constructeur</span>
+          <span><span class="material-symbols-outlined">settings_remote</span> Assistance config offerte</span>
+          <span><span class="material-symbols-outlined">payments</span> Orange / MTN / Virement B2B</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs-section">
+      <div class="tabs-nav">
+        <button type="button" [class.active]="activeTab() === 'specs'" (click)="activeTab.set('specs')">
+          <span class="material-symbols-outlined">tune</span> Caractéristiques Techniques
+        </button>
+        <button type="button" [class.active]="activeTab() === 'warranty'" (click)="activeTab.set('warranty')">
+          <span class="material-symbols-outlined">security</span> Garantie &amp; Support SAV
+        </button>
+      </div>
+
+      <div class="tab-panel">
+        @if (activeTab() === 'specs') {
+          <table class="specs-table">
+            <tbody>
+              @for (entry of specsEntries; track entry[0]) {
+                <tr>
+                  <th>{{ entry[0] }}</th>
+                  <td>{{ entry[1] }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+          @if (p.description) { <p class="full-description">{{ p.description }}</p> }
+        } @else {
+          <div class="warranty-info">
+            <p><span class="material-symbols-outlined">verified_user</span> Garantie constructeur {{ p.warrantyMonths }} mois, remplacement anticipé en cas de panne matérielle.</p>
+            <p><span class="material-symbols-outlined">support_agent</span> Support technique dédié pour la mise en service, disponible 6j/7.</p>
+            <p><span class="material-symbols-outlined">local_shipping</span> SAV et retours pris en charge via nos agences Douala, Yaoundé et Bafoussam.</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (related().length) {
+      <section class="related-section">
+        <h2 class="section-title">Fréquemment Achetés Ensemble / Compléments Réseau</h2>
+        <div class="product-grid">
+          @for (r of related(); track r.id) {
+            <app-product-card [product]="r" />
+          }
+        </div>
+      </section>
+    }
+  </div>
+}

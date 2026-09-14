@@ -1,0 +1,29 @@
+@use '../../../styles/mixins' as m;
+
+.contact-page { padding-block: var(--space-lg) var(--space-xl); }
+.section-head { max-width: 60ch; margin-bottom: var(--space-xl); }
+.section-head p { color: var(--color-on-surface-variant); }
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+
+  @include m.desktop { grid-template-columns: 1fr 1.2fr; }
+}
+
+.card { padding: var(--space-lg); }
+.card h2 { font-size: 1.0625rem; margin-bottom: var(--space-md); }
+
+.office {
+  display: flex;
+  gap: .75rem;
+  padding-bottom: var(--space-md);
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-outline-variant);
+
+  &:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .material-symbols-outlined { color: var(--color-primary); }
+  p { font-size: .8125rem; color: var(--color-on-surface-variant); margin: 0; }
+}

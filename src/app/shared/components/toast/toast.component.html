@@ -1,0 +1,11 @@
+<div class="toast-stack" role="status" aria-live="polite">
+  @for (toast of notification.toasts(); track toast.id) {
+    <div class="toast" [class]="'toast-' + toast.type">
+      <span class="material-symbols-outlined">{{ iconFor(toast.type) }}</span>
+      <span class="toast-message">{{ toast.message }}</span>
+      <button type="button" class="toast-close" (click)="notification.dismiss(toast.id)" aria-label="Fermer la notification">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+  }
+</div>

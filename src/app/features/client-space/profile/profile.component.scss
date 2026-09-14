@@ -1,0 +1,22 @@
+@use '../../../../styles/mixins' as m;
+
+.page-sub { color: var(--color-on-surface-variant); margin-bottom: var(--space-lg); }
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+
+  @include m.desktop { grid-template-columns: 1fr 1fr; }
+}
+
+.card { padding: var(--space-lg); }
+.card h2 { font-size: 1.0625rem; margin-bottom: var(--space-md); }
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--space-md);
+
+  @include m.tablet { grid-template-columns: 1fr 1fr; }
+}

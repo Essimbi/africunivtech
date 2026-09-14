@@ -1,0 +1,86 @@
+@if (loading()) {
+  <div class="loading-state"><span class="spinner"></span> Chargement de la commande...</div>
+} @else if (order()) {
+  @let o = order()!;
+  <a routerLink="/compte/commandes" class="back-link"><span class="material-symbols-outlined">arrow_back</span> Retour aux commandes</a>
+
+  <div class="detail-head">
+    <div>
+      <h1 class="section-title">Commande {{ o.orderNumber }}</h1>
+      <p class="page-sub">Passée le {{ o.createdAt | date: 'dd MMMM yyyy à HH:mm' }}</p>
+    </div>
+    <div class="head-actions">
+      <span class="status-badge" [class]="'status-' + o.status">{{ statusLabel(o.status) }}</span>
+      <button type="button" class="btn btn-outline" (click)="downloadInvoice()">
+        <span class="material-symbols-outlined">picture_as_pdf</span> Facture PDF
+      </button>
+    </div>
+  </div>
+
+  @if (o.status !== 'cancelled') {
+    <div class="card tracker">
+      <div class="tracker-steps">
+        @for (s of statusSteps; track s; let i = $index) {
+          <div class="tracker-step" [class.done]="i <= stepIndex()" [class.active]="i === stepIndex()">
+            <span class="dot"></span>
+            <span class="tracker-label">{{ statusLabel(s) }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="detail-layout">
+    <div class="detail-main">
+      <div class="card">
+        <h2>Articles commandés</h2>
+        <div class="item-rows">
+          @for (item of o.items; track item.id) {
+            <div class="item-row">
+              <div>
+                <strong>{{ item.productName }}</strong>
+                @if (item.variantName) { <span class="variant">{{ item.variantName }}</span> }
+                <span class="sku">Réf: {{ item.sku }}</span>
+              </div>
+              <span>{{ item.quantity }} x {{ item.unitPriceTtc | number: '1.0-0' }} FCFA</span>
+              <strong>{{ item.lineTotalTtc | number: '1.0-0' }} FCFA</strong>
+            </div>
+          }
+        </div>
+        <div class="totals">
+          <div><span>Sous-total HT</span><strong>{{ o.subtotalHt | number: '1.0-0' }} FCFA</strong></div>
+          <div><span>TVA</span><strong>{{ o.vatAmount | number: '1.0-0' }} FCFA</strong></div>
+          <div><span>Livraison</span><strong>{{ o.shippingFee === 0 ? 'Gratuite' : (o.shippingFee | number: '1.0-0') + ' FCFA' }}</strong></div>
+          <div class="grand-total"><span>Total TTC</span><strong>{{ o.totalTtc | number: '1.0-0' }} FCFA</strong></div>
+        </div>
+      </div>
+
+      @if (o.statusHistory?.length) {
+        <div class="card">
+          <h2>Historique des statuts</h2>
+          <div class="history-rows">
+            @for (h of o.statusHistory; track h.id) {
+              <div class="history-row">
+                <span class="status-badge" [class]="'status-' + h.status">{{ statusLabel(h.status) }}</span>
+                <span class="history-date">{{ h.createdAt | date: 'dd MMM yyyy HH:mm' }}</span>
+                @if (h.comment) { <span class="history-comment">{{ h.comment }}</span> }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <aside class="card address-card">
+      <h2><span class="material-symbols-outlined">local_shipping</span> Adresse de livraison</h2>
+      <p><strong>{{ o.shippingAddress['fullName'] }}</strong></p>
+      <p>{{ o.shippingAddress['phone'] }}</p>
+      <p>{{ o.shippingAddress['line1'] }}</p>
+      @if (o.shippingAddress['line2']) { <p>{{ o.shippingAddress['line2'] }}</p> }
+      <p>{{ o.shippingAddress['city'] }}, {{ o.shippingAddress['country'] }}</p>
+
+      <h2 class="payment-title"><span class="material-symbols-outlined">payments</span> Paiement</h2>
+      <p>{{ paymentLabel(o.paymentMethod) }} — <span class="paid-badge">Payée (simulation)</span></p>
+    </aside>
+  </div>
+}

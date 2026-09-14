@@ -1,0 +1,55 @@
+@use 'tokens' as t;
+
+@mixin tablet {
+  @media (min-width: #{t.$bp-tablet}) { @content; }
+}
+
+@mixin desktop {
+  @media (min-width: #{t.$bp-desktop}) { @content; }
+}
+
+@mixin wide {
+  @media (min-width: #{t.$bp-wide}) { @content; }
+}
+
+@mixin container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--page-margin-mobile);
+
+  @include desktop {
+    padding-inline: var(--page-margin);
+  }
+}
+
+@mixin card {
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+}
+
+@mixin card-hover {
+  &:hover {
+    box-shadow: var(--shadow-2);
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+}
+
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    box-shadow: var(--focus-ring);
+  }
+}
+
+@mixin line-clamp($lines) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

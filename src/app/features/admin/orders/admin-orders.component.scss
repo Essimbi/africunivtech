@@ -1,0 +1,23 @@
+.status-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .375rem;
+  margin-bottom: var(--space-md);
+}
+
+.status-tabs button {
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-full);
+  padding: .375rem .875rem;
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+
+  &:hover { border-color: var(--color-primary); }
+  &.active { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+}
+
+.table-wrap { padding: 0; }
+
+.sub { display: block; font-size: .6875rem; color: var(--color-outline); }

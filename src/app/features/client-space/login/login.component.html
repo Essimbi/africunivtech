@@ -1,0 +1,41 @@
+<div class="container auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <img src="assets/brand/logo-full.png" alt="Africa Univ Technology Sarl" class="brand-logo auth-logo" />
+      <h1>Connexion Espace Client B2B</h1>
+      <p>Accédez à vos commandes, factures et devis professionnels.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="email">Adresse email</label>
+        <input id="email" class="input" type="email" formControlName="email" [class.invalid]="form.get('email')?.invalid && form.get('email')?.touched" autocomplete="email" />
+        @if (form.get('email')?.invalid && form.get('email')?.touched) {
+          <span class="error-text">Adresse email valide requise.</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input id="password" class="input" type="password" formControlName="password" [class.invalid]="form.get('password')?.invalid && form.get('password')?.touched" autocomplete="current-password" />
+      </div>
+
+      <div class="field" style="flex-direction: row; justify-content: space-between; align-items: center;">
+        <a routerLink="/compte/mot-de-passe-oublie" style="font-size: .8125rem; color: var(--color-primary); font-weight: 600;">Mot de passe oublié ?</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="submitting()">
+        {{ submitting() ? 'Connexion...' : 'Se connecter' }}
+      </button>
+    </form>
+
+    <p class="auth-footer">
+      Pas encore de compte entreprise ? <a routerLink="/compte/inscription">Créer un compte B2B</a>
+    </p>
+
+    <div class="auth-divider">Comptes de démonstration</div>
+    <p style="font-size:.75rem; color: var(--color-outline); text-align:center;">
+      client&#64;africauniv-tech.com / Client&#64;12345
+    </p>
+  </div>
+</div>

@@ -1,0 +1,196 @@
+@use '../../../../styles/mixins' as m;
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-surface-lowest);
+  box-shadow: var(--shadow-1);
+}
+
+.top-bar {
+  background: var(--color-inverse-surface);
+  color: var(--color-inverse-on-surface);
+  font-size: .75rem;
+  display: none;
+
+  @include m.desktop { display: block; }
+}
+
+.top-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: .4rem;
+}
+
+.top-left, .top-right {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+
+  .material-symbols-outlined { font-size: 1rem; }
+}
+
+.top-link { display: flex; align-items: center; gap: 4px; transition: color .15s ease; }
+.top-link:hover { color: var(--color-inverse-primary); }
+.top-divider { opacity: .4; }
+
+.main-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding-block: .875rem;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-shrink: 0;
+}
+
+.brand-logo-nav {
+  height: 40px;
+}
+
+.brand-tagline {
+  display: none;
+  font-size: .6875rem;
+  line-height: 1.2;
+  color: var(--color-on-surface-variant);
+  max-width: 11ch;
+
+  @include m.desktop { display: block; }
+}
+
+.search-form {
+  flex: 1 1 320px;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  border: 1.5px solid var(--color-outline-variant);
+  border-radius: var(--radius);
+  padding: .375rem .375rem .375rem .875rem;
+  background: var(--color-surface-lowest);
+  transition: border-color .15s ease, box-shadow .15s ease;
+  min-width: 0;
+
+  &:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring);
+  }
+
+  .material-symbols-outlined { color: var(--color-outline); }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    font-size: .875rem;
+    background: transparent;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  margin-left: auto;
+}
+
+.action-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: .375rem .625rem;
+  border-radius: var(--radius);
+  color: var(--color-on-surface-variant);
+  font-size: .6875rem;
+  font-weight: 600;
+  position: relative;
+  background: none;
+  border: none;
+  transition: background .15s ease, color .15s ease;
+
+  .material-symbols-outlined { font-size: 1.375rem; }
+
+  &:hover { background: var(--color-surface-container); color: var(--color-primary); }
+}
+
+.as-button { cursor: pointer; }
+
+.support-link { display: none; @include m.desktop { display: flex; } }
+
+.action-label {
+  @media (max-width: 400px) { display: none; }
+}
+
+.cart-badge {
+  position: absolute;
+  top: -2px;
+  right: 2px;
+  background: var(--color-secondary-container);
+  color: #fff;
+  font-size: .625rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+.menu-toggle {
+  display: flex;
+  background: none;
+  border: none;
+  padding: .5rem;
+  color: var(--color-on-surface);
+
+  @include m.desktop { display: none; }
+}
+
+.nav-bar {
+  border-top: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-low);
+  display: none;
+
+  &.open { display: block; }
+
+  @include m.desktop { display: block; }
+}
+
+.nav-bar-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  @include m.desktop {
+    flex-direction: row;
+    gap: var(--space-lg);
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: .625rem 0;
+    font-size: .8125rem;
+    font-weight: 600;
+    color: var(--color-on-surface-variant);
+    border-bottom: 2px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
+
+    @include m.desktop { padding: .75rem 0; }
+
+    .material-symbols-outlined { font-size: 1.05rem; }
+
+    &:hover, &.active { color: var(--color-primary); border-color: var(--color-primary); }
+  }
+}

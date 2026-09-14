@@ -1,0 +1,46 @@
+<div class="page-head">
+  <div>
+    <h1 class="section-title">Commandes &amp; Devis</h1>
+    <p class="page-sub">{{ total() }} commande{{ total() > 1 ? 's' : '' }}.</p>
+  </div>
+</div>
+
+<div class="status-tabs">
+  @for (tab of statusTabs; track tab.value) {
+    <button type="button" [class.active]="activeStatus() === tab.value" (click)="selectStatus(tab.value)">{{ tab.label }}</button>
+  }
+</div>
+
+<div class="search-row">
+  <input class="input" placeholder="Rechercher un n° de commande..." [ngModel]="search()" (ngModelChange)="search.set($event)" (keyup.enter)="onSearch()" />
+  <button type="button" class="btn btn-outline" (click)="onSearch()">Rechercher</button>
+</div>
+
+@if (loading()) {
+  <div class="loading-state"><span class="spinner"></span> Chargement...</div>
+} @else {
+  <div class="card table-wrap">
+    <table>
+      <thead>
+        <tr><th>Commande</th><th>Client</th><th>Date</th><th>Montant</th><th>Statut</th><th></th></tr>
+      </thead>
+      <tbody>
+        @for (o of orders(); track o.id) {
+          <tr [routerLink]="['/admin/commandes', o.id]" class="clickable-row">
+            <td><strong>{{ o.orderNumber }}</strong></td>
+            <td>
+              {{ o.user?.company || (o.user?.firstName + ' ' + o.user?.lastName) }}
+              <span class="sub">{{ o.user?.email }}</span>
+            </td>
+            <td>{{ o.createdAt | date: 'dd MMM yyyy' }}</td>
+            <td>{{ o.totalTtc | number: '1.0-0' }} FCFA</td>
+            <td><span class="status-badge" [class]="'status-' + o.status">{{ statusLabel(o.status) }}</span></td>
+            <td><span class="material-symbols-outlined">chevron_right</span></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <app-pagination [page]="page()" [totalPages]="totalPages()" (pageChange)="changePage($event)" />
+}

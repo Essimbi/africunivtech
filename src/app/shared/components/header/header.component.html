@@ -1,0 +1,92 @@
+<header class="site-header">
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-left">
+        <span class="material-symbols-outlined">corporate_fare</span>
+        <span>Centrale d'Achat B2B &amp; Grands Comptes</span>
+      </div>
+      <div class="top-right">
+        <a href="tel:+237600000000" class="top-link">
+          <span class="material-symbols-outlined">call</span>
+          Support &amp; Ventes : +237 600 00 00 00
+        </a>
+        <span class="top-divider">|</span>
+        <span>XAF (FCFA)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-bar">
+    <div class="container main-bar-inner">
+      <a routerLink="/" class="brand">
+        <img src="assets/brand/logo-full.png" alt="Africa Univ Technology Sarl" class="brand-logo brand-logo-nav" />
+        <small class="brand-tagline">Infrastructures IT &amp; Sécurité Pan-Africaine</small>
+      </a>
+
+      <form class="search-form" (ngSubmit)="submitSearch()">
+        <span class="material-symbols-outlined">search</span>
+        <input
+          type="search"
+          name="search"
+          placeholder="Rechercher un équipement, une marque, une référence..."
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+          aria-label="Rechercher un produit"
+        />
+        <button type="submit" class="btn btn-primary btn-sm">Rechercher</button>
+      </form>
+
+      <div class="actions">
+        <a routerLink="/catalogue" class="action-link support-link">
+          <span class="material-symbols-outlined">support_agent</span>
+          <span class="action-label">Devis Express</span>
+        </a>
+
+        @if (authService.isAuthenticated && !authService.isAdmin) {
+          <a routerLink="/compte" class="action-link">
+            <span class="material-symbols-outlined">account_circle</span>
+            <span class="action-label">{{ authService.currentUser?.firstName }}</span>
+          </a>
+          <button type="button" class="action-link as-button" (click)="logout()" title="Déconnexion">
+            <span class="material-symbols-outlined">logout</span>
+          </button>
+        } @else if (authService.isAuthenticated && authService.isAdmin) {
+          <a routerLink="/admin" class="action-link">
+            <span class="material-symbols-outlined">admin_panel_settings</span>
+            <span class="action-label">Console Admin</span>
+          </a>
+        } @else {
+          <a routerLink="/compte/connexion" class="action-link">
+            <span class="material-symbols-outlined">person</span>
+            <span class="action-label">Mon Espace</span>
+          </a>
+        }
+
+        <a routerLink="/panier" class="action-link cart-link">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          @if (itemCount() > 0) {
+            <span class="cart-badge">{{ itemCount() }}</span>
+          }
+          <span class="action-label">Panier</span>
+        </a>
+
+        <button type="button" class="menu-toggle" (click)="toggleMobileMenu()" aria-label="Ouvrir le menu">
+          <span class="material-symbols-outlined">{{ mobileMenuOpen() ? 'close' : 'menu' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="nav-bar" [class.open]="mobileMenuOpen()">
+    <div class="container nav-bar-inner">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span class="material-symbols-outlined">home</span> Accueil
+      </a>
+      <a routerLink="/catalogue" routerLinkActive="active">Catalogue</a>
+      <a routerLink="/catalogue" [queryParams]="{ category: 'ordinateurs-serveurs' }">Ordinateurs</a>
+      <a routerLink="/catalogue" [queryParams]="{ category: 'videosurveillance' }">Vidéosurveillance</a>
+      <a routerLink="/catalogue" [queryParams]="{ category: 'reseaux-switchs' }">Réseau</a>
+      <a routerLink="/contact">Contact</a>
+    </div>
+  </nav>
+</header>

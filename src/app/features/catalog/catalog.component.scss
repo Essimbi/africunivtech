@@ -1,0 +1,167 @@
+@use '../../../styles/mixins' as m;
+
+.catalog-page { padding-block: var(--space-lg) var(--space-xl); }
+
+.catalog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.catalog-sub { color: var(--color-on-surface-variant); font-size: .9375rem; }
+
+.filters-toggle { @include m.desktop { display: none; } }
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: var(--space-md);
+  font-size: .8125rem;
+  color: var(--color-on-surface-variant);
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-surface-container);
+  padding: .25rem .5rem .25rem .75rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+
+  button {
+    background: none;
+    border: none;
+    display: flex;
+    color: var(--color-outline);
+  }
+
+  .material-symbols-outlined { font-size: .875rem; }
+}
+
+.clear-all {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: underline;
+  font-size: .8125rem;
+}
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+
+  @include m.desktop {
+    grid-template-columns: 280px 1fr;
+  }
+}
+
+.filters-rail {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-lg);
+
+  &.open { display: flex; }
+
+  @include m.desktop {
+    display: flex;
+    position: sticky;
+    top: 5.5rem;
+    align-self: start;
+  }
+}
+
+.filter-block h3 {
+  font-size: .8125rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--color-on-surface-variant);
+  margin-bottom: .625rem;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: .5rem .625rem;
+  border-radius: var(--radius);
+  font-size: .875rem;
+  color: var(--color-on-surface);
+  transition: background .15s ease, color .15s ease;
+
+  &:hover { background: var(--color-surface-container); }
+  &.active { background: var(--color-surface-container); color: var(--color-primary); font-weight: 700; }
+
+  .count { color: var(--color-outline); font-weight: 500; font-size: .75rem; }
+}
+
+.price-inputs {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--color-outline);
+
+  .input { height: 38px; }
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .375rem 0;
+  font-size: .875rem;
+  cursor: pointer;
+
+  input { accent-color: var(--color-primary); width: 16px; height: 16px; }
+}
+
+.results-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-md);
+}
+
+.sort-label {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: flex-end;
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+
+  .select { height: 38px; min-width: 0; width: 100%; max-width: 220px; }
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+
+  @include m.tablet { grid-template-columns: repeat(3, 1fr); }
+}
+
+.loading-state, .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xl) 0;
+  color: var(--color-on-surface-variant);
+
+  .material-symbols-outlined { font-size: 2.5rem; color: var(--color-outline); }
+}
+
+.loading-state { flex-direction: row; }

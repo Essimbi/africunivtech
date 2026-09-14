@@ -1,0 +1,92 @@
+<h1 class="section-title">Tableau de Bord Opérationnel AUTS</h1>
+
+@if (kpis(); as k) {
+  <div class="kpi-grid">
+    <div class="card kpi-card">
+      <span class="material-symbols-outlined">payments</span>
+      <div>
+        <strong>{{ k.revenueThisMonth | number: '1.0-0' }} FCFA</strong>
+        <span>Chiffre d'Affaires Mensuel</span>
+      </div>
+    </div>
+    <div class="card kpi-card warn">
+      <span class="material-symbols-outlined">pending_actions</span>
+      <div>
+        <strong>{{ k.pendingOrders }}</strong>
+        <span>Commandes en Attente</span>
+      </div>
+    </div>
+    <div class="card kpi-card danger">
+      <span class="material-symbols-outlined">error_outline</span>
+      <div>
+        <strong>{{ k.criticalStock }}</strong>
+        <span>Alerte Stock Critique</span>
+      </div>
+    </div>
+    <div class="card kpi-card">
+      <span class="material-symbols-outlined">domain_verification</span>
+      <div>
+        <strong>{{ k.newCustomersThisMonth }}</strong>
+        <span>Nouveaux Comptes Pros (mois)</span>
+      </div>
+    </div>
+  </div>
+}
+
+<div class="dashboard-grid">
+  <div class="card panel">
+    <div class="panel-head">
+      <h2>Commandes Récentes à Valider</h2>
+      <a routerLink="/admin/commandes" class="btn btn-ghost btn-sm">Voir tout</a>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Commande</th><th>Client</th><th>Montant</th><th>Statut</th></tr>
+        </thead>
+        <tbody>
+          @for (o of recentOrders(); track o.id) {
+            <tr [routerLink]="['/admin/commandes', o.id]" class="clickable-row">
+              <td><strong>{{ o.orderNumber }}</strong></td>
+              <td>{{ o.user?.company || (o.user?.firstName + ' ' + o.user?.lastName) }}</td>
+              <td>{{ o.totalTtc | number: '1.0-0' }} FCFA</td>
+              <td><span class="status-badge" [class]="'status-' + o.status">{{ statusLabel(o.status) }}</span></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card panel">
+    <div class="panel-head">
+      <h2>Alertes Inventaire &amp; Stocks</h2>
+      <a routerLink="/admin/produits" class="btn btn-ghost btn-sm">Gérer</a>
+    </div>
+    @if (criticalStock().length === 0) {
+      <p class="empty-msg">Aucune alerte de stock actuellement.</p>
+    } @else {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Matériel</th><th>Stock</th><th>Seuil</th><th>Statut</th></tr>
+          </thead>
+          <tbody>
+            @for (p of criticalStock(); track p.id) {
+              <tr [routerLink]="['/admin/produits', p.id]" class="clickable-row">
+                <td>{{ p.name }}</td>
+                <td>{{ p.stock }}</td>
+                <td>{{ p.stockAlertThreshold }}</td>
+                <td>
+                  <span class="badge" [class]="p.stock === 0 ? 'badge-danger' : 'badge-warning'">
+                    {{ p.stock === 0 ? 'Rupture' : 'Stock critique' }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

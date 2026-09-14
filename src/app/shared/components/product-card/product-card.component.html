@@ -1,0 +1,44 @@
+<a class="product-card card-hover" [routerLink]="['/produit', product.slug]">
+  <div class="media">
+    <img [src]="primaryImage" [alt]="product.name" loading="lazy" />
+    <span class="badge" [class.badge-success]="product.availability === 'in_stock'" [class.badge-warning]="product.availability !== 'in_stock'">
+      {{ availabilityLabel }}
+    </span>
+    @if (discountPercent) {
+      <span class="badge badge-accent discount">-{{ discountPercent }}%</span>
+    }
+    @if (product.isNew) {
+      <span class="badge badge-neutral new-badge">Nouveau</span>
+    }
+  </div>
+
+  <div class="body">
+    <span class="brand-line">{{ product.brand }} @if (product.category) { &bull; {{ product.category.name }} }</span>
+    <h3 class="name">{{ product.name }}</h3>
+
+    @if (product.highlights?.length) {
+      <div class="highlights">
+        @for (h of product.highlights.slice(0, 3); track h) {
+          <span class="highlight-pill">{{ h }}</span>
+        }
+      </div>
+    }
+
+    <div class="rating-line">
+      <app-star-rating [value]="product.ratingAvg" />
+      <span class="rating-count">({{ product.ratingCount }} avis B2B)</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="price-block">
+      @if (product.compareAtPriceTtc) {
+        <span class="price-strike">{{ product.compareAtPriceTtc | number: '1.0-0' }} FCFA</span>
+      }
+      <span class="price price-lg">{{ product.priceTtc | number: '1.0-0' }} <small>FCFA</small></span>
+    </div>
+    <button type="button" class="btn-icon add-btn" (click)="quickAdd($event)" [disabled]="adding || product.stock === 0" aria-label="Ajouter au panier">
+      <span class="material-symbols-outlined">{{ adding ? 'hourglass_top' : 'add_shopping_cart' }}</span>
+    </button>
+  </div>
+</a>

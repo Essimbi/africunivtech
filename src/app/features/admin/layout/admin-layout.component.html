@@ -1,0 +1,51 @@
+<div class="admin-shell">
+  <aside class="admin-sidebar" [class.open]="sidebarOpen()">
+    <div class="sidebar-brand">
+      <div class="brand-logo-chip">
+        <img src="assets/brand/logo-full.png" alt="Africa Univ Technology Sarl" class="brand-logo" />
+      </div>
+      <small>Console Admin — Centrale Matériel IT</small>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span class="material-symbols-outlined">dashboard</span> Tableau de Bord
+      </a>
+      <a routerLink="/admin/produits" routerLinkActive="active">
+        <span class="material-symbols-outlined">inventory_2</span> Inventaire &amp; Stocks
+      </a>
+      <a routerLink="/admin/commandes" routerLinkActive="active">
+        <span class="material-symbols-outlined">receipt_long</span> Commandes &amp; Devis
+      </a>
+      <a routerLink="/admin/clients" routerLinkActive="active">
+        <span class="material-symbols-outlined">corporate_fare</span> Clients &amp; Entreprises
+      </a>
+      @if (authService.isSuperAdmin) {
+        <a routerLink="/admin/utilisateurs" routerLinkActive="active">
+          <span class="material-symbols-outlined">manage_accounts</span> Utilisateurs Admin
+        </a>
+      }
+    </nav>
+
+    <button type="button" class="logout-btn" (click)="logout()">
+      <span class="material-symbols-outlined">logout</span> Déconnexion
+    </button>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button type="button" class="menu-toggle" (click)="sidebarOpen.set(!sidebarOpen())" aria-label="Menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <span class="topbar-title">Portail Admin AUTS</span>
+      <div class="topbar-actions">
+        <span class="admin-name">{{ authService.currentUser?.firstName }} {{ authService.currentUser?.lastName }}</span>
+        <span class="role-badge">{{ authService.currentUser?.role }}</span>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

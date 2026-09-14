@@ -1,0 +1,93 @@
+<div class="page-head">
+  <div>
+    <h1 class="section-title">Mes Adresses de Livraison</h1>
+    <p class="page-sub">Gérez votre carnet d'adresses pour accélérer vos commandes.</p>
+  </div>
+  @if (!showForm()) {
+    <button type="button" class="btn btn-primary" (click)="newAddress()">
+      <span class="material-symbols-outlined">add_location_alt</span> Ajouter une adresse
+    </button>
+  }
+</div>
+
+@if (showForm()) {
+  <div class="card form-card">
+    <h2>{{ editingId() ? 'Modifier l\'adresse' : 'Nouvelle adresse' }}</h2>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="form-grid-2">
+        <div class="field">
+          <label>Libellé</label>
+          <input class="input" formControlName="label" placeholder="Ex: Siège social, Entrepôt..." />
+        </div>
+        <div class="field">
+          <label>Nom complet</label>
+          <input class="input" formControlName="fullName" />
+        </div>
+      </div>
+      <div class="form-grid-2">
+        <div class="field">
+          <label>Téléphone</label>
+          <input class="input" formControlName="phone" />
+        </div>
+        <div class="field">
+          <label>Ville</label>
+          <input class="input" formControlName="city" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Adresse (ligne 1)</label>
+        <input class="input" formControlName="line1" />
+      </div>
+      <div class="field">
+        <label>Complément (optionnel)</label>
+        <input class="input" formControlName="line2" />
+      </div>
+      <div class="form-grid-2">
+        <div class="field">
+          <label>Région</label>
+          <input class="input" formControlName="region" />
+        </div>
+        <div class="field">
+          <label>Pays</label>
+          <input class="input" formControlName="country" />
+        </div>
+      </div>
+      <label class="checkbox-row">
+        <input type="checkbox" formControlName="isDefault" /> Définir comme adresse par défaut
+      </label>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" (click)="showForm.set(false)">Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+} @else if (loading()) {
+  <div class="loading-state"><span class="spinner"></span> Chargement...</div>
+} @else if (addresses().length === 0) {
+  <div class="card empty-state">
+    <span class="material-symbols-outlined">location_off</span>
+    <p>Aucune adresse enregistrée pour le moment.</p>
+  </div>
+} @else {
+  <div class="address-grid">
+    @for (addr of addresses(); track addr.id) {
+      <div class="card address-item">
+        <div class="address-item-head">
+          <strong>{{ addr.label }}</strong>
+          @if (addr.isDefault) { <span class="badge badge-success">Par défaut</span> }
+        </div>
+        <p>{{ addr.fullName }} — {{ addr.phone }}</p>
+        <p>{{ addr.line1 }}@if (addr.line2) {, {{ addr.line2 }} }</p>
+        <p>{{ addr.city }}@if (addr.region) {, {{ addr.region }} }, {{ addr.country }}</p>
+        <div class="address-actions">
+          <button type="button" class="btn btn-ghost btn-sm" (click)="edit(addr)">
+            <span class="material-symbols-outlined">edit</span> Modifier
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm" (click)="remove(addr)">
+            <span class="material-symbols-outlined">delete</span> Supprimer
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+}

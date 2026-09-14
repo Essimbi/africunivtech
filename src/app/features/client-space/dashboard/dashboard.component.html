@@ -1,0 +1,45 @@
+<h1 class="section-title">Tableau de bord</h1>
+<p class="page-sub">Suivez vos livraisons IT, factures et garanties matérielles certifiées.</p>
+
+@if (loading()) {
+  <div class="loading-state"><span class="spinner"></span> Chargement...</div>
+} @else {
+  <div class="kpi-grid">
+    <div class="card kpi-card">
+      <span class="material-symbols-outlined">inventory_2</span>
+      <div><strong>{{ totalOrders() }}</strong><span>Commandes totales</span></div>
+    </div>
+    <div class="card kpi-card">
+      <span class="material-symbols-outlined">payments</span>
+      <div><strong>{{ totalInvested() | number: '1.0-0' }} FCFA</strong><span>Total investi</span></div>
+    </div>
+    <div class="card kpi-card">
+      <span class="material-symbols-outlined">local_shipping</span>
+      <div><strong>{{ inTransitCount() }}</strong><span>En cours de livraison</span></div>
+    </div>
+  </div>
+
+  <div class="card recent-orders">
+    <div class="panel-head">
+      <h2>Commandes récentes</h2>
+      <a routerLink="/compte/commandes" class="btn btn-ghost btn-sm">Voir tout <span class="material-symbols-outlined">arrow_forward</span></a>
+    </div>
+
+    @if (recentOrders().length === 0) {
+      <p class="empty-msg">Vous n'avez pas encore passé de commande.</p>
+    } @else {
+      <div class="order-rows">
+        @for (o of recentOrders(); track o.id) {
+          <a class="order-row" [routerLink]="['/compte/commandes', o.id]">
+            <div>
+              <strong>{{ o.orderNumber }}</strong>
+              <span class="order-date">{{ o.createdAt | date: 'dd MMM yyyy' }}</span>
+            </div>
+            <span class="status-badge" [class]="'status-' + o.status">{{ statusLabel(o.status) }}</span>
+            <strong class="order-amount">{{ o.totalTtc | number: '1.0-0' }} FCFA</strong>
+          </a>
+        }
+      </div>
+    }
+  </div>
+}

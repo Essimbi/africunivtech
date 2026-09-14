@@ -1,0 +1,75 @@
+<div class="page-head">
+  <div>
+    <h1 class="section-title">Utilisateurs Admin</h1>
+    <p class="page-sub">Gestion des comptes administrateurs et de leurs rôles.</p>
+  </div>
+  @if (!showForm()) {
+    <button type="button" class="btn btn-primary" (click)="showForm.set(true)">
+      <span class="material-symbols-outlined">person_add</span> Nouvel administrateur
+    </button>
+  }
+</div>
+
+@if (showForm()) {
+  <div class="card form-card">
+    <h2>Nouveau compte administrateur</h2>
+    <form [formGroup]="form" (ngSubmit)="create()">
+      <div class="form-grid-2">
+        <div class="field">
+          <label>Prénom</label>
+          <input class="input" formControlName="firstName" />
+        </div>
+        <div class="field">
+          <label>Nom</label>
+          <input class="input" formControlName="lastName" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input class="input" type="email" formControlName="email" />
+      </div>
+      <div class="form-grid-2">
+        <div class="field">
+          <label>Mot de passe</label>
+          <input class="input" type="password" formControlName="password" />
+        </div>
+        <div class="field">
+          <label>Rôle</label>
+          <select class="select" formControlName="role">
+            <option value="admin">Admin</option>
+            <option value="superadmin">Super Admin</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" (click)="showForm.set(false)">Annuler</button>
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">
+          {{ saving() ? 'Création...' : 'Créer le compte' }}
+        </button>
+      </div>
+    </form>
+  </div>
+} @else if (loading()) {
+  <div class="loading-state"><span class="spinner"></span> Chargement...</div>
+} @else {
+  <div class="card table-wrap">
+    <table>
+      <thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Statut</th><th>Actions</th></tr></thead>
+      <tbody>
+        @for (a of admins(); track a.id) {
+          <tr>
+            <td>{{ a.firstName }} {{ a.lastName }}</td>
+            <td>{{ a.email }}</td>
+            <td><span class="badge badge-neutral">{{ a.role }}</span></td>
+            <td><span class="badge badge-success">Actif</span></td>
+            <td>
+              <button type="button" class="btn btn-ghost btn-sm" (click)="toggleRole(a)">
+                Changer le rôle
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

@@ -1,0 +1,55 @@
+<div class="container contact-page">
+  <div class="section-head">
+    <span class="eyebrow"><span class="material-symbols-outlined">support_agent</span> Devis Express &amp; Support B2B</span>
+    <h1 class="section-title">Contactez la Centrale AUTS</h1>
+    <p>Nos équipes commerciales et techniques répondent sous 24h ouvrées pour toute demande de devis ou d'assistance.</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="card contact-info">
+      <h2>Nos agences</h2>
+      @for (o of offices; track o.city) {
+        <div class="office">
+          <span class="material-symbols-outlined">storefront</span>
+          <div>
+            <strong>{{ o.city }}</strong>
+            <p>{{ o.address }}</p>
+            <p>{{ o.phone }}</p>
+          </div>
+        </div>
+      }
+      <div class="office">
+        <span class="material-symbols-outlined">mail</span>
+        <div>
+          <strong>Email</strong>
+          <p>support&#64;africauniv-tech.com</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card contact-form">
+      <h2>Demande de devis express</h2>
+      <form (submit)="$event.preventDefault()">
+        <div class="field">
+          <label>Nom complet</label>
+          <input class="input" placeholder="Votre nom" />
+        </div>
+        <div class="field">
+          <label>Entreprise</label>
+          <input class="input" placeholder="Nom de votre entreprise" />
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input class="input" type="email" placeholder="vous@entreprise.com" />
+        </div>
+        <div class="field">
+          <label>Votre besoin</label>
+          <textarea class="input" rows="4" placeholder="Décrivez votre projet ou votre besoin en équipement..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <span class="material-symbols-outlined">send</span> Envoyer la demande
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

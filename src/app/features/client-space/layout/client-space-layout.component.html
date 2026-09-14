@@ -1,0 +1,38 @@
+<div class="container client-space">
+  <div class="client-space-header">
+    <div class="user-chip">
+      <span class="avatar">{{ authService.currentUser?.firstName?.[0] }}{{ authService.currentUser?.lastName?.[0] }}</span>
+      <div>
+        <strong>{{ authService.currentUser?.firstName }} {{ authService.currentUser?.lastName }}</strong>
+        <p>
+          <span class="material-symbols-outlined">verified</span>
+          {{ authService.currentUser?.company || 'Client Entreprise B2B' }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="client-space-layout">
+    <aside class="client-nav">
+      <a routerLink="/compte" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span class="material-symbols-outlined">dashboard</span> Tableau de bord
+      </a>
+      <a routerLink="/compte/commandes" routerLinkActive="active">
+        <span class="material-symbols-outlined">receipt_long</span> Mes Commandes &amp; Factures
+      </a>
+      <a routerLink="/compte/adresses" routerLinkActive="active">
+        <span class="material-symbols-outlined">local_shipping</span> Mes Adresses de Livraison
+      </a>
+      <a routerLink="/compte/profil" routerLinkActive="active">
+        <span class="material-symbols-outlined">manage_accounts</span> Paramètres du Profil
+      </a>
+      <button type="button" class="logout-btn" (click)="logout()">
+        <span class="material-symbols-outlined">power_settings_new</span> Déconnexion
+      </button>
+    </aside>
+
+    <div class="client-content">
+      <router-outlet />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<h1 class="section-title">Paramètres du Profil</h1>
+<p class="page-sub">Gérez vos informations personnelles et votre sécurité de compte.</p>
+
+<div class="profile-grid">
+  <div class="card">
+    <h2>Informations personnelles</h2>
+    <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+      <div class="form-grid-2">
+        <div class="field">
+          <label>Prénom</label>
+          <input class="input" formControlName="firstName" />
+        </div>
+        <div class="field">
+          <label>Nom</label>
+          <input class="input" formControlName="lastName" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Entreprise</label>
+        <input class="input" formControlName="company" />
+      </div>
+      <div class="field">
+        <label>Téléphone</label>
+        <input class="input" formControlName="phone" />
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input class="input" [value]="authService.currentUser?.email" disabled />
+        <span class="hint">L'email ne peut pas être modifié.</span>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="savingProfile()">
+        {{ savingProfile() ? 'Enregistrement...' : 'Enregistrer les modifications' }}
+      </button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Sécurité — Changer le mot de passe</h2>
+    <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+      <div class="field">
+        <label>Mot de passe actuel</label>
+        <input class="input" type="password" formControlName="currentPassword" />
+      </div>
+      <div class="field">
+        <label>Nouveau mot de passe</label>
+        <input class="input" type="password" formControlName="newPassword" />
+        <span class="hint">Minimum 8 caractères.</span>
+      </div>
+      <button type="submit" class="btn btn-outline" [disabled]="savingPassword()">
+        {{ savingPassword() ? 'Mise à jour...' : 'Mettre à jour le mot de passe' }}
+      </button>
+    </form>
+  </div>
+</div>

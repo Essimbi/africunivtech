@@ -1,0 +1,102 @@
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-content animate-in">
+      <span class="eyebrow">
+        <span class="material-symbols-outlined">verified</span>
+        Distributeur Agréé Afrique Centrale • Matériel Neuf Certifié
+      </span>
+      <h1>L'Excellence Technologique &amp; Cybersécurité en Afrique Centrale</h1>
+      <p>
+        Grossiste &amp; distributeur agréé d'équipements informatiques, caméras IP haute résolution
+        et infrastructures réseau. Conçu pour les entreprises exigeantes, ministères et intégrateurs
+        télécoms.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/catalogue" class="btn btn-primary">
+          Découvrir le Catalogue
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+        <a routerLink="/contact" class="btn btn-outline">
+          <span class="material-symbols-outlined">request_quote</span>
+          Demander un Devis Express
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div><strong>+5,000</strong><span>Références en stock</span></div>
+        <div><strong>24 / 48h</strong><span>Livraison sécurisée</span></div>
+        <div><strong>100% B2B</strong><span>Support technique dédié</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="pulse-ring"></div>
+      <span class="material-symbols-outlined hero-icon">cell_tower</span>
+    </div>
+  </div>
+</section>
+
+<section class="section categories-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="material-symbols-outlined">hub</span> Domaines de Spécialisation</span>
+      <h2 class="section-title">Nos Pôles d'Expertise IT</h2>
+    </div>
+
+    <div class="category-grid">
+      @for (cat of categories(); track cat.id) {
+        <a class="category-card card-hover" [routerLink]="['/catalogue']" [queryParams]="{ category: cat.slug }">
+          <span class="material-symbols-outlined cat-icon">{{ cat.icon || 'devices_other' }}</span>
+          <h3>{{ cat.name }}</h3>
+          <p>{{ cat.description }}</p>
+          <span class="cat-link">Accéder <span class="material-symbols-outlined">chevron_right</span></span>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section featured-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="material-symbols-outlined">trending_up</span> Matériel le plus sollicité</span>
+      <h2 class="section-title">Meilleures Ventes</h2>
+    </div>
+
+    <div class="product-grid">
+      @for (p of featured(); track p.id) {
+        <app-product-card [product]="p" />
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section new-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="material-symbols-outlined">fiber_new</span> Derniers Conteneurs Réceptionnés</span>
+      <h2 class="section-title">Nouveautés &amp; Arrivages Récents</h2>
+      <p class="section-sub">Mis à jour quotidiennement • Tarifs grossistes disponibles</p>
+    </div>
+
+    <div class="product-grid">
+      @for (p of newArrivals(); track p.id) {
+        <app-product-card [product]="p" />
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section reassurance-section">
+  <div class="container reassurance-grid">
+    @for (item of reassurance; track item.title) {
+      <div class="reassurance-item">
+        <span class="material-symbols-outlined">{{ item.icon }}</span>
+        <div>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.text }}</p>
+        </div>
+      </div>
+    }
+  </div>
+</section>

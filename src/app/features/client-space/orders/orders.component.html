@@ -1,0 +1,57 @@
+<div class="orders-head">
+  <div>
+    <h1 class="section-title">Historique des Commandes</h1>
+    <p class="page-sub">{{ total() }} commande{{ total() > 1 ? 's' : '' }} au total.</p>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="loading-state"><span class="spinner"></span> Chargement des commandes...</div>
+} @else if (orders().length === 0) {
+  <div class="empty-state card">
+    <span class="material-symbols-outlined">inventory_2</span>
+    <p>Aucune commande pour le moment.</p>
+    <a routerLink="/catalogue" class="btn btn-primary">Découvrir le catalogue</a>
+  </div>
+} @else {
+  <div class="orders-table card">
+    <table>
+      <thead>
+        <tr>
+          <th>N° Commande</th>
+          <th>Date</th>
+          <th>Articles</th>
+          <th>Statut</th>
+          <th>Montant</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (o of orders(); track o.id) {
+          <tr [routerLink]="['/compte/commandes', o.id]" class="clickable-row">
+            <td><strong>{{ o.orderNumber }}</strong></td>
+            <td>{{ o.createdAt | date: 'dd MMM yyyy' }}</td>
+            <td class="items-cell">
+              @for (item of o.items.slice(0, 2); track item.id) {
+                <span>{{ item.quantity }}x {{ item.productName }}</span>
+              }
+              @if (o.items.length > 2) { <span class="more">+{{ o.items.length - 2 }} autre(s)</span> }
+            </td>
+            <td><span class="status-badge" [class]="'status-' + o.status">{{ statusLabel(o.status) }}</span></td>
+            <td><strong>{{ o.totalTtc | number: '1.0-0' }} FCFA</strong></td>
+            <td class="actions-cell">
+              <a [routerLink]="['/compte/commandes', o.id]" class="btn-icon" aria-label="Voir détail">
+                <span class="material-symbols-outlined">visibility</span>
+              </a>
+              <button type="button" class="btn-icon" (click)="downloadInvoice(o, $event)" aria-label="Télécharger la facture">
+                <span class="material-symbols-outlined">picture_as_pdf</span>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <app-pagination [page]="page()" [totalPages]="totalPages()" (pageChange)="changePage($event)" />
+}

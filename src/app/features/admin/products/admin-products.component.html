@@ -1,0 +1,71 @@
+<div class="page-head">
+  <div>
+    <h1 class="section-title">Inventaire &amp; Stocks</h1>
+    <p class="page-sub">{{ total() }} produits référencés.</p>
+  </div>
+  <a routerLink="/admin/produits/nouveau" class="btn btn-primary">
+    <span class="material-symbols-outlined">add_box</span> Nouveau Produit
+  </a>
+</div>
+
+<div class="search-row">
+  <input class="input" placeholder="Rechercher un produit..." [ngModel]="search()" (ngModelChange)="search.set($event)" (keyup.enter)="onSearch()" />
+  <button type="button" class="btn btn-outline" (click)="onSearch()">Rechercher</button>
+</div>
+
+@if (loading()) {
+  <div class="loading-state"><span class="spinner"></span> Chargement...</div>
+} @else {
+  <div class="card table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Produit</th><th>Catégorie</th><th>Prix TTC</th><th>Stock</th><th>Statut</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of products(); track p.id) {
+          <tr>
+            <td>
+              <div class="product-cell">
+                <img [src]="p.images[0]?.url || '/assets/products/placeholder.svg'" [alt]="p.name" />
+                <div>
+                  <strong>{{ p.name }}</strong>
+                  <span class="sku">{{ p.sku }}</span>
+                </div>
+              </div>
+            </td>
+            <td>{{ p.category?.name }}</td>
+            <td>{{ p.priceTtc | number: '1.0-0' }} FCFA</td>
+            <td>
+              <div class="stock-cell">
+                <button type="button" class="btn-icon btn-xs" (click)="adjustStock(p, -1, $event)">
+                  <span class="material-symbols-outlined">remove</span>
+                </button>
+                <span [class.stock-low]="p.stock <= p.stockAlertThreshold">{{ p.stock }}</span>
+                <button type="button" class="btn-icon btn-xs" (click)="adjustStock(p, 1, $event)">
+                  <span class="material-symbols-outlined">add</span>
+                </button>
+              </div>
+            </td>
+            <td>
+              <span class="badge" [class]="p.isActive ? 'badge-success' : 'badge-neutral'">
+                {{ p.isActive ? 'Actif' : 'Désactivé' }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <a [routerLink]="['/admin/produits', p.id]" class="btn-icon" aria-label="Modifier">
+                <span class="material-symbols-outlined">edit</span>
+              </a>
+              <button type="button" class="btn-icon" (click)="remove(p, $event)" aria-label="Désactiver">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <app-pagination [page]="page()" [totalPages]="totalPages()" (pageChange)="changePage($event)" />
+}

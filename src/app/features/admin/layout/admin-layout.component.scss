@@ -1,0 +1,118 @@
+@use '../../../../styles/mixins' as m;
+
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-surface-low);
+}
+
+.admin-sidebar {
+  width: 260px;
+  background: var(--color-inverse-surface);
+  color: var(--color-inverse-on-surface);
+  display: none;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 50;
+
+  &.open { display: flex; position: fixed; inset: 0 25% 0 0; }
+
+  @include m.desktop { display: flex; position: sticky; }
+}
+
+.sidebar-brand {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: var(--space-lg) var(--space-md);
+
+  .brand-logo { height: 30px; }
+  small { font-size: .6875rem; opacity: .65; }
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: .125rem;
+  padding: 0 .75rem;
+  flex: 1;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem .875rem;
+  border-radius: var(--radius);
+  font-size: .875rem;
+  font-weight: 600;
+  color: rgba(237, 240, 255, .75);
+  transition: background .15s ease, color .15s ease;
+
+  &:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+  &.active { background: var(--color-primary); color: #fff; }
+
+  .material-symbols-outlined { font-size: 1.25rem; }
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin: var(--space-md) .75rem;
+  padding: .75rem .875rem;
+  border-radius: var(--radius);
+  background: none;
+  border: none;
+  color: #ffb4a8;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover { background: rgba(255, 180, 168, .1); }
+}
+
+.admin-main { flex: 1; min-width: 0; }
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 1rem var(--space-lg);
+  background: var(--color-surface-lowest);
+  border-bottom: 1px solid var(--color-outline-variant);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.menu-toggle {
+  display: flex;
+  background: none;
+  border: none;
+
+  @include m.desktop { display: none; }
+}
+
+.topbar-title { font-family: var(--font-display); font-weight: 700; }
+
+.topbar-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+  font-size: .8125rem;
+}
+
+.role-badge {
+  background: var(--color-surface-container);
+  padding: .25rem .625rem;
+  border-radius: var(--radius-full);
+  text-transform: capitalize;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.admin-content { padding: var(--space-lg); }

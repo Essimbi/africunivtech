@@ -1,0 +1,48 @@
+<div class="page-head">
+  <div>
+    <h1 class="section-title">Clients &amp; Entreprises</h1>
+    <p class="page-sub">{{ total() }} comptes clients enregistrés.</p>
+  </div>
+</div>
+
+<div class="search-row">
+  <input class="input" placeholder="Rechercher un client, une entreprise..." [ngModel]="search()" (ngModelChange)="search.set($event)" (keyup.enter)="onSearch()" />
+  <button type="button" class="btn btn-outline" (click)="onSearch()">Rechercher</button>
+</div>
+
+@if (loading()) {
+  <div class="loading-state"><span class="spinner"></span> Chargement...</div>
+} @else {
+  <div class="card table-wrap">
+    <table>
+      <thead>
+        <tr><th>Client</th><th>Entreprise</th><th>Contact</th><th>Inscrit le</th><th>Statut</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        @for (c of customers(); track c.id) {
+          <tr [routerLink]="['/admin/clients', c.id]" class="clickable-row">
+            <td><strong>{{ c.firstName }} {{ c.lastName }}</strong></td>
+            <td>{{ c.company || '—' }}</td>
+            <td>
+              {{ c.email }}
+              <span class="sub">{{ c.phone }}</span>
+            </td>
+            <td>{{ c.createdAt | date: 'dd MMM yyyy' }}</td>
+            <td>
+              <span class="badge" [class]="c.isActive ? 'badge-success' : 'badge-danger'">
+                {{ c.isActive ? 'Actif' : 'Suspendu' }}
+              </span>
+            </td>
+            <td>
+              <button type="button" class="btn btn-ghost btn-sm" (click)="toggleActive(c, $event)">
+                {{ c.isActive ? 'Suspendre' : 'Réactiver' }}
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <app-pagination [page]="page()" [totalPages]="totalPages()" (pageChange)="changePage($event)" />
+}

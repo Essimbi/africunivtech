@@ -1,0 +1,9 @@
+@use '../../../../styles/mixins' as m;
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--space-md);
+
+  @include m.tablet { grid-template-columns: 1fr 1fr; }
+}

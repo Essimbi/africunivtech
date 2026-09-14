@@ -1,0 +1,84 @@
+@use '../../../../styles/mixins' as m;
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+  margin-bottom: var(--space-md);
+
+  &:hover { color: var(--color-primary); }
+}
+
+h1 { margin-bottom: var(--space-lg); }
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  max-width: 860px;
+}
+
+.form-section { padding: var(--space-lg); }
+.form-section h2 { font-size: 1.0625rem; margin-bottom: var(--space-md); }
+
+.section-head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+
+  h2 { margin: 0; }
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--space-md);
+
+  @include m.tablet { grid-template-columns: 1fr 1fr; }
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--space-md);
+
+  @include m.tablet { grid-template-columns: repeat(3, 1fr); }
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: .375rem;
+  margin-top: var(--space-sm);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .875rem;
+
+  input { accent-color: var(--color-primary); }
+}
+
+.repeat-row {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: .5rem;
+  align-items: center;
+
+  .input { flex: 1; }
+}
+
+.variant-row .input { min-width: 0; }
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .75rem;
+  padding-bottom: var(--space-xl);
+}

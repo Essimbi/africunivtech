@@ -1,0 +1,64 @@
+.confirmation-page { padding-block: var(--space-lg) var(--space-xl); }
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-xl) 0;
+  color: var(--color-on-surface-variant);
+}
+
+.confirmation-card {
+  max-width: 640px;
+  margin-inline: auto;
+  padding: var(--space-xl);
+  text-align: center;
+}
+
+.success-icon {
+  font-size: 4rem;
+  color: var(--color-primary);
+  font-variation-settings: 'FILL' 1;
+}
+
+.confirmation-card h1 { margin-top: var(--space-sm); }
+.confirmation-card > p { color: var(--color-on-surface-variant); margin-bottom: var(--space-lg); }
+
+.order-summary {
+  text-align: left;
+  background: var(--color-surface-low);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: .875rem;
+  padding-block: .3rem;
+  color: var(--color-on-surface-variant);
+
+  strong { color: var(--color-on-surface); text-transform: capitalize; }
+}
+
+.items-list {
+  text-align: left;
+  margin-bottom: var(--space-lg);
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: .8125rem;
+  padding-block: .3rem;
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.confirmation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .625rem;
+}

@@ -1,0 +1,21 @@
+@use '../../../../styles/mixins' as m;
+
+.form-card { padding: var(--space-lg); max-width: 640px; }
+.form-card h2 { font-size: 1.0625rem; margin-bottom: var(--space-md); }
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--space-md);
+
+  @include m.tablet { grid-template-columns: 1fr 1fr; }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .625rem;
+  margin-top: var(--space-md);
+}
+
+.table-wrap { padding: 0; }

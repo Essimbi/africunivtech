@@ -1,0 +1,79 @@
+@use '../../../../styles/mixins' as m;
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.page-sub { color: var(--color-on-surface-variant); }
+
+.loading-state { display: flex; align-items: center; gap: .5rem; color: var(--color-on-surface-variant); }
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xl);
+  text-align: center;
+
+  .material-symbols-outlined { font-size: 3rem; color: var(--color-outline); }
+  p { color: var(--color-on-surface-variant); }
+}
+
+.form-card { padding: var(--space-lg); max-width: 640px; }
+.form-card h2 { font-size: 1.0625rem; margin-bottom: var(--space-md); }
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--space-md);
+
+  @include m.tablet { grid-template-columns: 1fr 1fr; }
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .875rem;
+  margin-block: var(--space-sm);
+
+  input { accent-color: var(--color-primary); }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .625rem;
+  margin-top: var(--space-md);
+}
+
+.address-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+
+  @include m.tablet { grid-template-columns: repeat(2, 1fr); }
+}
+
+.address-item { padding: var(--space-md); }
+
+.address-item-head {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .375rem;
+}
+
+.address-item p { font-size: .8125rem; color: var(--color-on-surface-variant); margin: 2px 0; }
+
+.address-actions {
+  display: flex;
+  gap: .5rem;
+  margin-top: var(--space-sm);
+}

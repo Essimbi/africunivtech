@@ -1,0 +1,91 @@
+<div class="container cart-page">
+  <app-checkout-steps [current]="1" />
+
+  <div class="cart-head">
+    <h1 class="section-title">Mon Panier d'Achat Professionnel</h1>
+    <p>({{ cart().items.length }} article{{ cart().items.length > 1 ? 's' : '' }})</p>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-state"><span class="spinner"></span> Chargement du panier...</div>
+  } @else if (cart().items.length === 0) {
+    <div class="empty-cart">
+      <span class="material-symbols-outlined">remove_shopping_cart</span>
+      <h2>Votre panier est vide</h2>
+      <p>Parcourez notre catalogue pour ajouter des équipements informatiques et de sécurité.</p>
+      <a routerLink="/catalogue" class="btn btn-primary">Découvrir le catalogue</a>
+    </div>
+  } @else {
+    <div class="cart-layout">
+      <div class="cart-items">
+        @for (item of cart().items; track item.id) {
+          <div class="cart-item card">
+            <img [src]="item.product.image || '/assets/products/placeholder.svg'" [alt]="item.product.name" class="item-image" />
+            <div class="item-body">
+              <h3>{{ item.product.name }}</h3>
+              @if (item.variant) { <p class="variant-name">{{ item.variant.name }}</p> }
+              <p class="item-sku">Réf: {{ item.product.sku }}</p>
+              <p class="unit-price">Prix unitaire: <strong>{{ item.unitPriceTtc | number: '1.0-0' }} FCFA</strong></p>
+            </div>
+            <div class="item-controls">
+              <app-quantity-input [value]="item.quantity" [max]="item.product.stock" (valueChange)="updateQuantity(item.id, $event)" />
+              <span class="line-total">{{ item.lineTotalTtc | number: '1.0-0' }} FCFA</span>
+              <button type="button" class="btn-icon" (click)="removeItem(item.id)" aria-label="Retirer l'article">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+          </div>
+        }
+
+        <div class="cart-actions-row">
+          <a routerLink="/catalogue" class="btn btn-ghost">
+            <span class="material-symbols-outlined">arrow_back</span> Continuer mes achats
+          </a>
+          <button type="button" class="btn btn-ghost" (click)="clearCart()">
+            <span class="material-symbols-outlined">remove_shopping_cart</span> Vider le panier
+          </button>
+        </div>
+      </div>
+
+      <aside class="summary card">
+        <h2><span class="material-symbols-outlined">receipt_long</span> Récapitulatif de Commande</h2>
+        <div class="summary-line">
+          <span>Sous-total HT</span>
+          <strong>{{ cart().totals.subtotalHt | number: '1.0-0' }} FCFA</strong>
+        </div>
+        <div class="summary-line">
+          <span>TVA ({{ (cart().totals.vatRate * 100) | number: '1.2-2' }}%)</span>
+          <strong>{{ cart().totals.vatAmount | number: '1.0-0' }} FCFA</strong>
+        </div>
+        <div class="summary-line">
+          <span>Frais de livraison</span>
+          @if (cart().totals.shippingFee === 0) {
+            <strong class="free">Gratuit</strong>
+          } @else {
+            <strong>{{ cart().totals.shippingFee | number: '1.0-0' }} FCFA</strong>
+          }
+        </div>
+        @if (cart().totals.shippingFee === 0) {
+          <p class="free-shipping-note"><span class="material-symbols-outlined">check_circle</span> Seuil de gratuité atteint</p>
+        }
+        <div class="summary-total">
+          <span>Total TTC</span>
+          <span class="price price-lg">{{ cart().totals.totalTtc | number: '1.0-0' }} FCFA</span>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-block" (click)="proceedToCheckout()">
+          <span class="material-symbols-outlined">lock</span> Passer la commande sécurisée
+        </button>
+
+        <div class="payment-methods">
+          <span>Modes de règlement acceptés</span>
+          <div class="method-icons">
+            <span>Orange Money</span>
+            <span>MTN MoMo</span>
+            <span>Virement Bancaire</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  }
+</div>
